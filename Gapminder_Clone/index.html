@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="">
+  <title>Gapminder Clone</title>
+  <!-- Custom styling -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/jquery-ui.css">
+  <link rel="stylesheet" href="css/tooltip.css">
+</head>
+
+<body>
+  <!-- Bootstrap grid setup -->
+  <div class="container">
+    <div id="ui">
+      <button class="ui-element" id="play">Play</button>
+      <button class="ui-element" id="reset">Reset</button>
+      <select class="ui-element" id="dropdown"></select>
+      <div class="slider-container">
+        <label for="yearSlider">Year Slider</label>
+        <input class="ui-element" type="range" id="yearSlider">
+      </div>
+    </div>
+    <div id="chart-area"></div>
+  </div>
+
+  <!-- External JS libraries -->
+  <script src="js/jquery.min.js"></script>
+  <script src="js/jquery-ui.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/d3.min.js"></script>
+  <script src="js/d3-tip.js"></script>
+  <script src="js/d3-legend.js"></script>
+
+  <!-- Custom JS -->
+  <script src="js/main.js"></script>
+
+</body>
+
+</html>
