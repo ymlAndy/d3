@@ -17,6 +17,11 @@ Promise.all(promises).then(function (allData) {
 
   const mapbox = new MapBox(mapconfig, dimension)
   const map = mapbox.map
+  map.on("load", d => {
+    document.getElementById('loader').style.display = 'none'
+    document.getElementById('container').style.transition = '2000ms'
+    document.getElementById('container').style.opacity = 1
+  })
   map.scrollZoom.disable()
   map.addControl(new mapboxgl.NavigationControl())
   const container = map.getCanvasContainer()
