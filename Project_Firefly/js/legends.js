@@ -11,7 +11,7 @@ class Legends {
             .attr("id", "legend")
 
         this.svg = d3.select("#legend")
-        this.drawLegend()
+        this.drawLegends()
     }
 
     drawLegends() {

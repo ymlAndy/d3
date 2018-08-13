@@ -38,7 +38,7 @@ Promise.all(promises).then(function (allData) {
   bubbleLayer.drawBubbles("All", hour, animationDuration)
 
   let legend = new Legends(traffic, dimension, bubbleLayer.scales, container)
-  legend.drawLegend()
+  legend.drawLegends()
 
   map.on("move", d => bubbleLayer.drawBubbles(document.getElementById("dropdown").value, hour, animationDuration))
   map.on("viewreset", d => bubbleLayer.drawBubbles(document.getElementById("dropdown").value, hour, animationDuration))
