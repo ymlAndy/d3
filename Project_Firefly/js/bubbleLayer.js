@@ -12,8 +12,9 @@ class BubbleLayer {
         this.dataContainer = d3.select(this.detachedContainer)
         this.scales = {
             size: d3.scaleLinear()
+                // NEED TO CHECK THIS....
                 .domain(d3.extent(this.data, d => d.card_id))
-                .range([1.5, 10]),
+                .range([1.5, 4]),
             colour: d3.scaleOrdinal()
                 .domain(this.data.map(d => d.StopType))
                 .range(["#fc6a52", "#a8d681", "#ffdd1c", "#5e83ba", "#551a8b"])
@@ -63,6 +64,7 @@ class BubbleLayer {
         let context = this.context
         let elements = d3.select(this.detachedContainer).selectAll("custom.arc");
         context.clearRect(0, 0, this.dimension.width, this.dimension.height);
+        context.globalAlpha = 0.85;
         elements.each(function () {
             let node = d3.select(this);
 

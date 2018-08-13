@@ -17,10 +17,10 @@ class Legends {
     drawLegends() {
         this.svg.append("g")
             .attr("class", "legendSize")
-            .attr("transform", "translate(50, 600)");
+            .attr("transform", "translate(7, 600)");
         this.svg.append("g")
             .attr("class", "legendColour")
-            .attr("transform", "translate(50, 750)")
+            .attr("transform", "translate(7, 750)")
 
         const legendSize = d3.legendSize()
             .scale(this.scales.size)

@@ -77,6 +77,11 @@
         /* Cursor on hover */
     }
 
+    #yearSlider::-webkit-slider-thumb::hover {
+        transition: 200ms;
+        background: #333333;
+    }
+
     #yearSlider::-moz-range-thumb {
         width: 25px;
         /* Set a specific slider handle width */
@@ -168,12 +173,11 @@
 
     .legendSize {
         fill: #f3f3f3;
-        opacity: 0.85;
+        outline-color: #333333;
     }
 
     .legendColour {
         fill: #f3f3f3;
-        opacity: 0.85;
     }
 
     .legendTitle {
