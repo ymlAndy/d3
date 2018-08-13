@@ -14,6 +14,12 @@
         height: 100%;
     }
 
+    #legend {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+    }
+
     canvas {
         position: absolute;
         width: 100%;
@@ -38,7 +44,7 @@
         -webkit-appearance: none;
         /* Override default CSS styles */
         appearance: none;
-        background: #d3d3d3;
+        background: #f3f3f3;
         /* Grey background */
         outline: none;
         /* Remove outline */
@@ -83,12 +89,12 @@
     }
 
     select {
-        color: white;
+        color: #f3f3f3;
     }
 
     select-items,
     select-selected {
-        color: #ffffff;
+        color: #f3f3f3;
     }
 
     /* select-items div {
@@ -102,20 +108,20 @@
         z-index: 1;
         background-color: rgba(17, 17, 17, 0);
         border-radius: 10px;
-        transition: 500ms;
-        opacity: 0.2;
-    }
-
-    .ui-container:hover {
-        transition: 200ms;
+        /* transition: 500ms; */
         opacity: 0.8;
     }
+
+    /* .ui-container:hover {
+        transition: 200ms;
+        opacity: 0.8;
+    } */
 
     label {
         font-family: Arial, Helvetica, sans-serif;
         font-style: Helvetica;
         cursor: pointer;
-        color: #f2f2f2;
+        color: #f3f3f3;
         /* font-weight: bold; */
         font-size: 20px
     }
@@ -131,7 +137,7 @@
         margin: -75px 0 0 -75px;
         border: 16px solid #f3f3f3;
         border-radius: 50%;
-        border-top: 16px solid rgb(82, 81, 81);
+        border-top: 16px solid rgb(51, 51, 51);
         width: 120px;
         height: 120px;
         -webkit-animation: spin 2s linear infinite;
@@ -158,4 +164,19 @@
 
     #container {
         opacity: 0;
+    }
+
+    .legendSize {
+        fill: #f3f3f3;
+        opacity: 0.85;
+    }
+
+    .legendColour {
+        fill: #f3f3f3;
+        opacity: 0.85;
+    }
+
+    .legendTitle {
+        font-weight: bold;
+        font: bold 15px Helvetica;
     }

@@ -1,11 +1,10 @@
 const promises = [d3.csv("data/traffic_grouped.csv")]
 Promise.all(promises).then(function (allData) {
-  //SET UP DIMENSION
   const dimension = {
     height: document.getElementById("map").clientHeight,
     width: document.getElementById("map").clientWidth
   }
-  //SET UP MAP
+
   const mapconfig = {
     container: 'map',
     token: 'pk.eyJ1IjoibHltOTQwMzIwIiwiYSI6ImNqa2tjZDFnODBndzEzcHBqamRpdWk5YXQifQ.11SUGFepK_OOFf40LTYw7w',
@@ -23,16 +22,23 @@ Promise.all(promises).then(function (allData) {
     document.getElementById('container').style.opacity = 1
   })
   map.scrollZoom.disable()
-  map.addControl(new mapboxgl.NavigationControl())
+  map.touchZoomRotate.disable();
+  map.dragRotate.disable();
+  map.addControl(new mapboxgl.NavigationControl({
+    showCompass: false
+  }))
+
   const container = map.getCanvasContainer()
 
-
   let hour = 0
-  let animationDuration = 500
+  const animationDuration = 800
   const traffic = allData[0]
   const bubbleLayer = new BubbleLayer(traffic, container, dimension, mapbox)
   d3.timer(d => bubbleLayer.drawCanvas())
   bubbleLayer.drawBubbles("All", hour, animationDuration)
+
+  let legend = new Legends(traffic, dimension, bubbleLayer.scales, container)
+  legend.drawLegend()
 
   map.on("move", d => bubbleLayer.drawBubbles(document.getElementById("dropdown").value, hour, animationDuration))
   map.on("viewreset", d => bubbleLayer.drawBubbles(document.getElementById("dropdown").value, hour, animationDuration))
@@ -44,14 +50,13 @@ Promise.all(promises).then(function (allData) {
     bubbleLayer.drawBubbles(dropdown.value, hour, animationDuration)
   }
 
-
   const dropdown = document.getElementById("dropdown");
   dropdown.onchange = function () {
     bubbleLayer.drawBubbles(dropdown.value, hour, animationDuration)
   }
 
   const yearSlider = document.getElementById("yearSlider");
-  yearSlider.setAttribute("min", 0);
+  yearSlider.setAttribute("min", -1);
   yearSlider.setAttribute("max", 23);
   yearSlider.setAttribute("value", 0);
   yearSlider.oninput = function () {
