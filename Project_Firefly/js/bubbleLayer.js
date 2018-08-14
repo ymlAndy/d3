@@ -1,8 +1,9 @@
 class BubbleLayer {
-    constructor(data, container, dimension, map) {
+    constructor(data, container, dimension, map, animationDuration) {
         this.data = data;
         this.container = container;
         this.dimension = dimension;
+        this.animationDuration = animationDuration
         this.mapLayer = map
         this.chartArea = d3.select(this.container).append("canvas")
             .attr("width", this.dimension.width)
@@ -12,28 +13,34 @@ class BubbleLayer {
         this.dataContainer = d3.select(this.detachedContainer)
         this.scales = {
             size: d3.scaleLinear()
-                // NEED TO CHECK THIS....
-                .domain(d3.extent(this.data, d => d.card_id))
-                .range([1.5, 4]),
+                .domain(d3.extent(this.data, d => parseInt(d.card_id)))
+                .range([1.5, 10]),
             colour: d3.scaleOrdinal()
                 .domain(this.data.map(d => d.StopType))
                 .range(["#fc6a52", "#a8d681", "#ffdd1c", "#5e83ba", "#551a8b"])
         }
     }
-    drawBubbles(stopType, hour, animationDuration) {
+    drawBubbles(stopType, hour) {
         let bubbles = this.dataContainer.selectAll(".arc")
         let projection = this.mapLayer.getProjection()
+        let traffic = this.data
 
         if (stopType == "All") {
-            bubbles = bubbles.data(this.data.filter(d => d.hour == hour), d => d.stop_ID)
+            traffic = traffic.filter(d => parseInt(d.hour) == hour)
+            this.scales.size.domain(
+                d3.extent(
+                    this.data,
+                    d => parseInt(d.card_id)
+                )
+            )
         } else {
-            bubbles = bubbles.data(this.data.filter(
-                d => d.hour == hour
-            ).filter(
-                d => d.StopType == stopType
-            ), d => d.stop_ID)
+            traffic = traffic.filter(d => parseInt(d.hour) == hour).filter(d => d.StopType == stopType)
+            this.scales.size.domain(
+                d3.extent(this.data.filter(d => d.StopType == stopType), d => parseInt(d.card_id))
+            )
         }
 
+        bubbles = bubbles.data(traffic, d => d.stop_ID)
         bubbles.enter()
             .append("custom")
             .attr("class", "arc")
@@ -45,18 +52,18 @@ class BubbleLayer {
             .attr("r", 0)
             .attr("fillStyle", d => this.scales.colour(d.StopType))
             .transition("enter")
-            .duration(animationDuration)
+            .duration(this.animationDuration)
             .attr("r", d => this.scales.size(d.card_id))
 
         bubbles.attr("x", d => projection([d.GPSLong, d.GPSLat])[0])
             .attr("y", d => projection([d.GPSLong, d.GPSLat])[1])
             .transition("update")
-            .duration(animationDuration)
+            .duration(this.animationDuration)
             .attr("r", d => this.scales.size(d.card_id))
 
         bubbles.exit()
             .transition("exit")
-            .duration(animationDuration)
+            .duration(this.animationDuration)
             .attr("r", 0)
     }
 
