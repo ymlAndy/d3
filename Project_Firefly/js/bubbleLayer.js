@@ -1,11 +1,10 @@
 class BubbleLayer {
     constructor(data, container, dimension, map, animationDuration) {
         this.data = data;
-        this.container = container;
         this.dimension = dimension;
         this.animationDuration = animationDuration
         this.mapLayer = map
-        this.chartArea = d3.select(this.container).append("canvas")
+        this.chartArea = d3.select(container).append("canvas")
             .attr("width", this.dimension.width)
             .attr("height", this.dimension.height)
         this.context = this.chartArea.node().getContext('2d')
@@ -17,14 +16,15 @@ class BubbleLayer {
                 .range([1.5, 10]),
             colour: d3.scaleOrdinal()
                 .domain(this.data.map(d => d.StopType))
-                .range(["#fc6a52", "#a8d681", "#ffdd1c", "#5e83ba", "#551a8b"])
+                .range(["#fc6a52", "#a8d681", "#ffdd1c", "#5e83ba", "#8649BC"])
         }
     }
-    drawBubbles(stopType, hour) {
+    drawBubbles(stopType, hour, legend) {
         let bubbles = this.dataContainer.selectAll(".arc")
         let projection = this.mapLayer.getProjection()
         let traffic = this.data
 
+        //FILTER DATA
         if (stopType == "All") {
             traffic = traffic.filter(d => parseInt(d.hour) == hour)
             this.scales.size.domain(
@@ -40,7 +40,14 @@ class BubbleLayer {
             )
         }
 
+        //UPDATE LEGEND
+        if (legend) {
+            legend.drawLegends()
+        }
+
+        //BINDING FILTERED DATA
         bubbles = bubbles.data(traffic, d => d.stop_ID)
+        //NEW DATA 
         bubbles.enter()
             .append("custom")
             .attr("class", "arc")
@@ -55,16 +62,21 @@ class BubbleLayer {
             .duration(this.animationDuration)
             .attr("r", d => this.scales.size(d.card_id))
 
+        //UPDATE EXISTING
         bubbles.attr("x", d => projection([d.GPSLong, d.GPSLat])[0])
             .attr("y", d => projection([d.GPSLong, d.GPSLat])[1])
             .transition("update")
             .duration(this.animationDuration)
             .attr("r", d => this.scales.size(d.card_id))
 
+        //EXIT OLD
         bubbles.exit()
             .transition("exit")
             .duration(this.animationDuration)
             .attr("r", 0)
+            .remove()
+
+
     }
 
     drawCanvas() {

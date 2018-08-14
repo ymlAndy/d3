@@ -1,5 +1,5 @@
 const promises = [d3.csv("data/traffic_grouped.csv")]
-Promise.all(promises).then(function (allData) {
+Promise.all(promises).then(allData => {
   //LOAD DATA
   const traffic = allData[0]
 
@@ -43,26 +43,23 @@ Promise.all(promises).then(function (allData) {
   //INITIALISE DATA LAYER
   const bubbleLayer = new BubbleLayer(traffic, container, dimension, mapbox, animationDuration)
   d3.timer(() => bubbleLayer.drawCanvas())
-  bubbleLayer.drawBubbles("All", hour)
+  bubbleLayer.drawBubbles(document.getElementById("dropdown").value, hour)
 
   //DRAW LEGEND
-  let legend = new Legends(traffic, dimension, container)
-  legend.drawLegends(bubbleLayer.scales)
+  let legend = new Legends(container, bubbleLayer.scales)
 
-  //SYNC DATA LAYER WITH MAP LAYER
+  //SYNC DATA LAYER WITH MAP LAYER AND MAKE RESPONSIVE
   map.on("move", () => bubbleLayer.drawBubbles(document.getElementById("dropdown").value, hour))
   map.on("viewreset", () => bubbleLayer.drawBubbles(document.getElementById("dropdown").value, hour))
-  window.onresize = function () {
+  window.onresize = () => {
     let mapDiv = document.getElementById("map")
-    dimension.height = mapDiv.clientHeight
-    dimension.width = mapDiv.clientWidth
-    bubbleLayer.resizeLayer(dimension.width, dimension.height)
+    bubbleLayer.resizeLayer(mapDiv.clientWidth, mapDiv.clientHeight)
     bubbleLayer.drawBubbles(dropdown.value, hour)
   }
 
   //CREATE UI HANDLERS
   const dropdown = document.getElementById("dropdown");
-  dropdown.onchange = function () {
+  dropdown.onchange = () => {
     bubbleLayer.drawBubbles(dropdown.value, hour, legend)
   }
 
@@ -70,10 +67,10 @@ Promise.all(promises).then(function (allData) {
   yearSlider.setAttribute("min", -1);
   yearSlider.setAttribute("max", 23);
   yearSlider.setAttribute("value", 0);
-  yearSlider.oninput = function () {
+  yearSlider.oninput = () => {
     hour = yearSlider.valueAsNumber;
-    bubbleLayer.drawBubbles(dropdown.value, hour)
+    bubbleLayer.drawBubbles(dropdown.value, hour);
   }
-}).catch(function (error) {
+}).catch(error => {
   console.log(error)
 })
