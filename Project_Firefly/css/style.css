@@ -107,8 +107,8 @@
     } */
 
     .ui-container {
-        padding: 20px;
-        margin: 20px;
+        padding: 5px;
+        margin: 5px;
         position: absolute;
         z-index: 1;
         background-color: rgba(17, 17, 17, 0);

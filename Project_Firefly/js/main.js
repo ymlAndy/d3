@@ -45,8 +45,9 @@ Promise.all(promises).then(allData => {
   d3.timer(() => bubbleLayer.drawCanvas())
   bubbleLayer.drawBubbles(document.getElementById("dropdown").value, hour)
 
-  //DRAW LEGEND
+  //DRAW LEGEND & LABEL
   let legend = new Legends(container, bubbleLayer.scales)
+  legend.drawHourLabel(0)
 
   //SYNC DATA LAYER WITH MAP LAYER AND MAKE RESPONSIVE
   map.on("move", () => bubbleLayer.drawBubbles(document.getElementById("dropdown").value, hour))
@@ -70,6 +71,7 @@ Promise.all(promises).then(allData => {
   yearSlider.oninput = () => {
     hour = yearSlider.valueAsNumber;
     bubbleLayer.drawBubbles(dropdown.value, hour);
+    legend.drawHourLabel(hour)
   }
 }).catch(error => {
   console.log(error)

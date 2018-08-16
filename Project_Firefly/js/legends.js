@@ -37,4 +37,17 @@ class Legends {
         this.svg.select(".legendSize").call(legendSize)
         this.svg.select(".legendColour").call(legendColour)
     }
+
+    drawHourLabel(hour) {
+        d3.select("#hourLabel").remove()
+        this.svg.append("text")
+            .attr("id", "hourLabel")
+            .text("Current Hour: " + hour)
+            .style("fill", "#A3D6F5")
+            .attr('x', 10)
+            .attr('y', 100)
+            .style("font-family", "Helvetica")
+            .style("font-size", "20px")
+            .style("opacity", 0.85)
+    }
 }
